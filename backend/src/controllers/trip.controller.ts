@@ -1,8 +1,10 @@
 import type { Request, Response } from "express";
+import type { TripDocument } from "../types+interfaces/typesInterfaces.js";
 import { TripModel } from "../models/trip.model.js";
+import type { Controller } from "../types+interfaces/typesInterfaces.js"
 
-class LocalTripController{
-    getTrip = async (req: Request, res: Response) => {
+class LocalTripController implements Controller<TripDocument, void>{
+    handleGetObject = async (req: Request, res: Response) => {
     try {
         const { id = "" } = req.params; // hacemos que sea un string por default asi ts no nos exige que id tenga coherencia con la interfaz determinada (pide que sea string y en este caso empieza siendo undefined)
 
@@ -17,7 +19,7 @@ class LocalTripController{
     }
     };
 
-    createTrip = async (req: Request, res: Response) => {
+    handleCreateObject = async (req: Request, res: Response) => {
     try {
         const { title, description } = req.body;
 
@@ -29,6 +31,14 @@ class LocalTripController{
         return res.status(500).json({ error: "Error del servidor!" });
     }
     };
+
+    handleDeleteObject = async (req: Request, res: Response) => {
+        return;
+    }
+
+    handleUpdateObject = async (req: Request, res: Response) => {
+        return;
+    }
 }
 
 export const TripController = new LocalTripController() // instanciamos el controller para que sea exportada siempre la misma instancia
