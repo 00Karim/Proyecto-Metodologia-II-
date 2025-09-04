@@ -1,23 +1,14 @@
 import {Router} from "express";
-import {Trip} from "../models/entities/trip.js";
 import { TripController } from "../controllers/trip.controller.js";
 
-// TODO: Hay que hacer un archivo para centralizar todas las rutas en un mismo lugar
+const trips = Router();
 
-const router = Router();
+trips.get("/", TripController.handleGetObject)
 
-//GET Trips
-router.get("/", async(req, res) => {
-    const trips = await Trip.find(); // TODO: cuando ya esten bien implementadas, hay que remplazar el codigo dentro de {} por su funcion del controlador correspondiente
-    res.json(trips);
-});
+trips.post("/", TripController.handleCreateObject)
 
-//POST nuevo trip
-router.post("/", async(req,res) => {
-    const newTrip = new Trip(req.body); // TODO: cuando ya esten bien implementadas, hay que remplazar el codigo dentro de {} por su funcion del controlador correspondiente
-    await newTrip.save();
-    res.status(201).json(newTrip);
-});
+trips.delete("/:id", TripController.handleDeleteObject)
 
-export default router; 
+trips.put("/", TripController.handleUpdateObject)
 
+export default trips; 
