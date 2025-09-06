@@ -1,5 +1,6 @@
 import { Document, Mongoose, type ObjectId } from "mongoose";
 import type { Request, Response } from "express";
+import type { Schema } from "inspector/promises";
 
 // ---- INICIO INTERFACES DE DOCUMENTOS ----
 
@@ -7,7 +8,7 @@ import type { Request, Response } from "express";
 export interface UserDocument extends Document {
   nombre: string;
   mail: string;
-  contrasenia: string
+  contrasenia: string;
 }
 
 // TODO: estructura de un documento de tipo Activity
@@ -16,6 +17,11 @@ export interface UserDocument extends Document {
 export interface TripDocument extends Document {
   title: string;
   description: string;
+  origen: string;
+  destino: string;
+  participantes: ObjectId[];
+  administradores: ObjectId[];
+  actividades: ObjectId[];
 }
 
 // ---- FIN INTERFACES DE DOCUMENTOS ----
