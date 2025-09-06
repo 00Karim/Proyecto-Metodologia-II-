@@ -4,7 +4,16 @@ import type { Model } from "../types+interfaces/typesInterfaces.js"
 import type { ObjectId } from "mongoose"
 
 // clase que implementa la interfaz
-type ModelParams = {title?: string, description?: string, id?: string} // esta es la estructura que tienen que tener los parametros de la funcion crear dentro de la clase TripModel
+type ModelParams = {
+  id?: string,
+  titulo?: string,
+  descripcion?: string,
+  origen?: string,
+  destino?: string,
+  participantes?: string[],   
+  administradores?: string[],
+  actividades?: string[]
+} // esta es la estructura que tienen que tener los parametros de la funcion crear dentro de la clase TripModel
 
 class BaseTripModel implements Model<TripDocument, ModelParams> { 
 
@@ -13,10 +22,10 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
   }
 
   async createObject(parameters: ModelParams): Promise<TripDocument> { // TODO: `parameters: ModelParams` es algo temporal, despues podriamos hacer un type de parametros distinto para cada metodo
-    let { title, description } = parameters
+    let { titulo, descripcion } = parameters // TODO: Agregar los parametros que faltan
     const trip = new Trip({
-      title,
-      description
+      titulo,
+      descripcion
     });
 
     return trip; // placeholder

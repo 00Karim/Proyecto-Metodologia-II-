@@ -83,6 +83,8 @@ const Activity = new Schema({
 
 ```js
 const Trip = new Schema({
+    titulo: {type: String, required: true},
+    descripcion: {type: String, required: true},
     origen: {type: String, required: true},
     destino: {type: String, required: true},
     participantes: 
