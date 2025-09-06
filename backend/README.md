@@ -9,8 +9,19 @@ Federico Ruppel - federupel@gmail.com
 
 ### Descripcion de entidades
 
-**User** 
-User va a representar a los distintos usuarios de la pagina. Con la entidad usuario vamos a poder conectar a distintas personas en el sitio y darles las herramientas para crear y organizar sus viajes, para unirse a otros viajes, etc.
+**Rol**
+Va ser la clase abstracta que vamos a usar para que hereden los 3 tipos de usuarios. Los tipos de usuario van a representar a 
+los distintos usuarios de la pagina. Con estas entidades vamos a poder conectar a distintas personas en el sitio y darles las 
+herramientas para crear y organizar sus viajes, para unirse a otros viajes, etc.
+
+**Administrador --> Hereda de Rol**
+Va a ser el usuario creador de un viaje y va a podes manipular a la entidad trip de distintas maneras
+
+**Participante --> Hereda de Rol**
+Va a ser un usuario que forme parte de un trip pero que no sea administrador de este. Tiene menos permisos que el administrador
+
+**Usuario --> Hereda de Rol**
+Representa cuando el usuario no esta adentro de un trip y simplementa esta interactuando con la pagina de inicio.
 
 **Trip**
 Trip va a ser la entidad que representa el viaje que planea un usuario. Otros usuarios podran unirse a este viaje. La entidad viaje va a tener los atributos suficientes para ser lo mas descriptivo posible, asi los usuarios pueden decidir con certeza si quieren participar de este viaje o no. 
@@ -24,12 +35,43 @@ Activity es una entidad que representa una actividad dentro de un viaje. Si Pepi
 Como el DBML fue hecho para usarse con bases de datos relacionales y nosotros vamos a usar MongoDB (no relacional) entonces vamos a usar el Mongoose Schema para representar las entidades en vez de DBML.
 
 ```js
-const User = new Schema({
-    nombre: {type: String, required: true},
-    mail: {type: String, required: true},
-    contrasenia: {type: String, required: true}
-})
+const Usuario = new Schema({
+    nombre: { type: String, required: true },
+    mail: { type: String, required: true, unique: true },
+    contrasena: { type: String, required: true },
+    permisos: ["crearTrip"] 
+});
 ```
+
+```js
+const Participante = new Schema({
+    nombre: { type: String, required: true },
+    mail: { type: String, required: true, unique: true },
+    contrasena: { type: String, required: true },
+    permisos: 
+        [
+            {
+                type: String,
+                default: ["crearActividad", "votar"]
+            }
+        ] 
+});
+```
+
+ ```js
+const Administrador = new Schema({
+    nombre: { type: String, required: true },
+    mail: { type: String, required: true, unique: true },
+    contrasena: { type: String, required: true },
+    permisos: 
+        [
+            { 
+                type: String 
+                default: ["eliminarParticipante", "agregarParticipante", "crearActividad", "borarActividad", "borrarTrip", "votar"]
+            }
+        ] 
+});
+ ```
 
 ```js
 const Activity = new Schema({
@@ -43,20 +85,30 @@ const Activity = new Schema({
 const Trip = new Schema({
     origen: {type: String, required: true},
     destino: {type: String, required: true},
-    participantes: [
-        {
-            type: Schema.Types.ObjectId, 
-            ref: "User",
-            default: ["Sin participantes"]
-        }
-    ],
-    actividades: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Activity",
-            default: ["Sin actividades planeadas"]
-        }
-    ]
+    participantes: 
+        [
+            {
+                type: Schema.Types.ObjectId, 
+                ref: "Participante",
+                default: ["Sin participantes"]
+            }
+        ],
+    administradores: 
+        [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Administrador",
+                required: true
+            }
+        ]
+    actividades: 
+        [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Activity",
+                default: ["Sin actividades planeadas"]
+            }
+        ]
 })
 ```
 
