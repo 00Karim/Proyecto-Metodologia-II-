@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
-import tripRoutes from "./routes/tripRoutes.js";
+import rutas from "./routes/index.js";
 dotenv.config();
 connectDB();
 const app = express();
@@ -11,6 +11,6 @@ app.use(express.json());
 app.get("/", (_req, res) => {
     res.send("Tripmate API funcionando");
 });
-app.use("/api/trips", tripRoutes);
+app.use("/api", rutas);
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server corriendo en http:://localhost:${PORT}`));

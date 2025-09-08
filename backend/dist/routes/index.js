@@ -6,3 +6,4 @@ import rutasTrip from "./tripRoutes.js";
 import rutasUser from "./userRoutes.js";
 routerCentral.use('/trips', rutasTrip);
 routerCentral.use('/users', rutasUser);
+export default routerCentral;
