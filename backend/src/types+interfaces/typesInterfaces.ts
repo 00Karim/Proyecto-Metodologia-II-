@@ -11,7 +11,12 @@ export interface UserDocument extends Document {
   contrasenia: string;
 }
 
-// TODO: estructura de un documento de tipo Activity
+// estructura de un documento de tipo Activity
+export interface ActivityDocument extends Document {
+  nombre: string;
+  descripcion: string;
+  votos: number;
+}
 
 // TODO: estructura de un documento de tipo Trip
 export interface TripDocument extends Document {
