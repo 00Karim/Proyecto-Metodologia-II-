@@ -6,26 +6,34 @@ import type { ObjectId } from "mongoose"
 // clase que implementa la interfaz
 type ModelParams = {
   id?: string,
-  titulo?: string,
-  descripcion?: string,
-  origen?: string,
-  destino?: string,
-  participantes?: string[],   
-  administradores?: string[],
-  actividades?: string[]
+  title?: string,
+  description?: string,
+  origin?: string,
+  destination?: string,
+  participants?: string[],   
+  administrators?: string[],
+  activities?: string[]
 } // esta es la estructura que tienen que tener los parametros de la funcion crear dentro de la clase TripModel
 
 class BaseTripModel implements Model<TripDocument, ModelParams> { 
 
   async getObject(_id: ObjectId | string): Promise<TripDocument | null> {
-    return null; // placeholder --> aca adentro hay que hacer las consultas de mongodb usando el objeto Trip
+    return await Trip.findById(_id)
+      .populate('participants')
+      .populate('administrators')
+      .populate('activities')
   }
 
   async createObject(parameters: ModelParams): Promise<TripDocument> { // TODO: `parameters: ModelParams` es algo temporal, despues podriamos hacer un type de parametros distinto para cada metodo
-    let { titulo, descripcion } = parameters // TODO: Agregar los parametros que faltan
+    let { title, description, origin, destination, participants, administrators, activities } = parameters // TODO: Agregar los parametros que faltan
     const trip = new Trip({
-      titulo,
-      descripcion
+      title,
+      description,
+      origin,
+      destination,
+      participants,
+      administrators,
+      activities
     });
 
     return trip; // placeholder
@@ -33,12 +41,20 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
 
   async deleteObject(parameters: ModelParams): Promise<Boolean> {
     let { id } = parameters
-    const viajeBorrado = await Trip.findByIdAndDelete(id)
-    return viajeBorrado !== null  
+    const deletedTrip = await Trip.findByIdAndDelete(id)
+    return deletedTrip !== null  
   }
 
   async updateObject(parameters: ModelParams): Promise<TripDocument | null> {
-    return null
+    const {id, ...updateData} = parameters
+
+    if(!id) return null;
+
+    return await Trip.findByIdAndUpdate(
+      id,
+      updateData,
+      { new:true}
+    );
   }
 }
 

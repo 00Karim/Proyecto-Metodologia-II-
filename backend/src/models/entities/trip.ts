@@ -5,9 +5,9 @@ const TripSchema = new Schema<TripDocument>(
     {
         title: {type: String, required:true},
         description: {type: String, required:true},
-        origen: {type: String, required: true},
-        destino: {type: String, required: true},
-        participantes: 
+        origin: {type: String, required: true},
+        destination: {type: String, required: true},
+        participants: 
             [
                 {
                     type: Schema.Types.ObjectId, 
@@ -15,7 +15,7 @@ const TripSchema = new Schema<TripDocument>(
                     default: ["Sin participantes"]
                 }
             ],
-        administradores: 
+        administrators: 
             [
                 {
                     type: Schema.Types.ObjectId,
@@ -23,7 +23,7 @@ const TripSchema = new Schema<TripDocument>(
                     required: true
                 }
             ],
-        actividades: 
+        activities: 
             [
                 {
                     type: Schema.Types.ObjectId,

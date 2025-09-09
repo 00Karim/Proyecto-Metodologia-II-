@@ -22,11 +22,11 @@ export interface ActivityDocument extends Document {
 export interface TripDocument extends Document {
   title: string;
   description: string;
-  origen: string;
-  destino: string;
-  participantes: ObjectId[];
-  administradores: ObjectId[];
-  actividades: ObjectId[];
+  origin: string;
+  destination: string;
+  participants: ObjectId[];
+  administrators: ObjectId[];
+  activities: ObjectId[];
 }
 
 // ---- FIN INTERFACES DE DOCUMENTOS ----

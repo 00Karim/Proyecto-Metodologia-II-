@@ -3,7 +3,7 @@ import { TripController } from "../controllers/trip.controller.js";
 
 const trips = Router();
 
-trips.get("/", TripController.handleGetObject)
+trips.get("/:id", TripController.handleGetObject)
 
 trips.post("/", TripController.handleCreateObject)
 
