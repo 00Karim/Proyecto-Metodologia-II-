@@ -4,15 +4,17 @@ class BaseTripModel {
         return null; // placeholder --> aca adentro hay que hacer las consultas de mongodb usando el objeto Trip
     }
     async createObject(parameters) {
-        const { title, description } = parameters;
+        let { titulo, descripcion } = parameters; // TODO: Agregar los parametros que faltan
         const trip = new Trip({
-            title,
-            description
+            titulo,
+            descripcion
         });
         return trip; // placeholder
     }
     async deleteObject(parameters) {
-        return false;
+        let { id } = parameters;
+        const viajeBorrado = await Trip.findByIdAndDelete(id);
+        return viajeBorrado !== null;
     }
     async updateObject(parameters) {
         return null;

@@ -15,8 +15,8 @@ class LocalTripController {
     };
     handleCreateObject = async (req, res) => {
         try {
-            const { title, description } = req.body;
-            const trip = await TripModel.createObject({ title, description });
+            const { titulo, descripcion } = req.body;
+            const trip = await TripModel.createObject({ titulo, descripcion }); // TODO: agregar los atributos que faltan
             return res.status(201).json(trip);
         }
         catch (error) {
@@ -25,7 +25,20 @@ class LocalTripController {
         }
     };
     handleDeleteObject = async (req, res) => {
-        return;
+        try {
+            const { id = "" } = req.params;
+            const viajeBorrado = await TripModel.deleteObject({ id });
+            if (viajeBorrado) {
+                return res.status(204).json("Se borro el viaje correctamente");
+            }
+            else {
+                return res.status(404).json({ error: "El viaje ya fue borrado o no existe" });
+            }
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: "Error del servidor!" });
+        }
     };
     handleUpdateObject = async (req, res) => {
         return;
