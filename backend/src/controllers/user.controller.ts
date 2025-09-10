@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import type { Request, Response } from "express"
 import type { UserDocument } from "../types+interfaces/typesInterfaces.js"
 import { UserModel } from "../models/user.model.js"

@@ -11,8 +11,7 @@ const TripSchema = new Schema<TripDocument>(
             [
                 {
                     type: Schema.Types.ObjectId, 
-                    ref: "Participante",
-                    default: ["Sin participantes"]
+                    ref: "Participante"
                 }
             ],
         administrators: 
@@ -27,8 +26,7 @@ const TripSchema = new Schema<TripDocument>(
             [
                 {
                     type: Schema.Types.ObjectId,
-                    ref: "Activity",
-                    default: ["Sin actividades planeadas"]
+                    ref: "Activity"
                 }
             ]
         }

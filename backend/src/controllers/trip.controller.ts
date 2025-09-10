@@ -1,12 +1,16 @@
+import mongoose from "mongoose";
 import type { Request, Response } from "express";
 import type { TripDocument } from "../types+interfaces/typesInterfaces.js";
 import { TripModel } from "../models/trip.model.js";
 import type { Controller } from "../types+interfaces/typesInterfaces.js"
 
 class LocalTripController implements Controller<TripDocument, void>{
+    constructor(){
+        console.log("Controller loaded")
+    }
     handleGetObject = async (req: Request, res: Response) => {
         try {
-            const { id = "" } = req.params; // hacemos que sea un string por default asi ts no nos exige que id tenga coherencia con la interfaz determinada (pide que sea string y en este caso empieza siendo undefined)
+            const id = new mongoose.Types.ObjectId(req.params.id); 
 
             const trip = await TripModel.getObject(id);
 
@@ -36,7 +40,7 @@ class LocalTripController implements Controller<TripDocument, void>{
         try{
             const { id = "" } = req.params;
 
-            const viajeBorrado = await TripModel.deleteObject({id})
+            const viajeBorrado = await TripModel.deleteObject(id)
             if (viajeBorrado){
                 return res.status(204).json("Se borro el viaje correctamente");
             } else{
