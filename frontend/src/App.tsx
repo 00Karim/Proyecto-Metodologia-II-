@@ -1,39 +1,78 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { Routes, Route, NavLink, Navigate, useLocation } from "react-router-dom";
+import Trips from "./pages/Trips";
+import CreateTrip from "./pages/CreateTrip";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import TripDetail from "./pages/TripDetail";
+import { useAuth } from "./hooks/useAuth";
 
-interface Trip {
-  _id: string;
-  title: string;
-  description: string;
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  if (!user) {
+    // Redirige al login y guarda la ruta original en "state.from"
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+  return children;
 }
 
-function App() {
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [title, setTitle] = useState("");
-
-  useEffect(() => {
-    axios.get("http://localhost:4000/api/trips").then(res => setTrips(res.data));
-  }, []);
-
-  const addTrip = async () => {
-    const res = await axios.post("http://localhost:4000/api/trips", { title, description: "Demo trip" });
-    setTrips([...trips, res.data]);
-    setTitle("");
-  };
+export default function App() {
+  const { user, logout } = useAuth();
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>🌍 TripMate</h1>
-      <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Nombre del viaje" />
-      <button onClick={addTrip}>Agregar viaje</button>
+    <div className="container">
+      <nav className="navbar">
+        <div className="brand">🌍 TripMate</div>
+        <div className="links">
+          <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
+            Viajes
+          </NavLink>
+          <NavLink to="/nuevo" className={({ isActive }) => (isActive ? "active" : "")}>
+            Crear viaje
+          </NavLink>
+          {user ? (
+            <>
+              <span style={{ marginLeft: 10 }}>Hola, {user.nombre || user.mail}</span>
+              <button className="btn" style={{ marginLeft: 10 }} onClick={logout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" className={({ isActive }) => (isActive ? "active" : "")}>
+                Login
+              </NavLink>
+              <NavLink to="/register" className={({ isActive }) => (isActive ? "active" : "")}>
+                Registro
+              </NavLink>
+            </>
+          )}
+        </div>
+      </nav>
 
-      <ul>
-        {trips.map(t => (
-          <li key={t._id}>{t.title}</li>
-        ))}
-      </ul>
+      <main className="content">
+        <Routes>
+          <Route path="/" element={<Trips />} />
+          <Route
+            path="/nuevo"
+            element={
+              <RequireAuth>
+                <CreateTrip />
+              </RequireAuth>
+            }
+          />
+          <Route path="/trips/:id" element={<TripDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<div>404 - Página no encontrada</div>} />
+        </Routes>
+      </main>
+
+      <footer className="footer">
+        <small>Frontend Vite + React + TS</small>
+      </footer>
     </div>
   );
 }
 
-export default App;
