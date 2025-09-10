@@ -36,7 +36,7 @@ class LocalTripController implements Controller<TripDocument, void>{
         try{
             const { id = "" } = req.params;
 
-            const viajeBorrado = await TripModel.deleteObject({id})
+            const viajeBorrado = await TripModel.deleteObject(id)
             if (viajeBorrado){
                 return res.status(204).json("Se borro el viaje correctamente");
             } else{

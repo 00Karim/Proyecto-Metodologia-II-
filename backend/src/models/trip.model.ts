@@ -31,8 +31,8 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
     return trip; // placeholder
   }
 
-  async deleteObject(parameters: ModelParams): Promise<Boolean> {
-    let { id } = parameters
+  async deleteObject(_id: ObjectId | string): Promise<Boolean> {
+    let id = _id
     const viajeBorrado = await Trip.findByIdAndDelete(id)
     return viajeBorrado !== null  
   }

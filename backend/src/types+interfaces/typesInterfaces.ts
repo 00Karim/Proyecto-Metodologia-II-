@@ -30,7 +30,7 @@ export interface TripDocument extends Document {
 export interface Model <ClassType, Parameters>{ // de esta forma podemos dinamizar esta interfaz de modelos para que podamos ingresar parametros y clases dinamicamente dependiendo de que con que entidada estemos tratando
   getObject(_id: ObjectId | string): Promise<ClassType | null>;   // Puede devolver un objeto (conforme vamos creando entidades, vamos a ir agregando otros posibles outputs) o null // TODO: por ahora podemos dejar que sea string o object id, pero despues creo que podriamos dejar que sea solo objectid o podemos hacer que dentro del model, si id es un string, entonces se lo convierte a ObjectId 
   createObject(parameters: Parameters): Promise<ClassType | null>; // recibe los atributos para crear un objeto nuevo, y si se crea el objeto nuevo lo devuelve, sino se puede crear por alguna razon entonces devuelve null
-  deleteObject(parameters: Parameters): Promise<Boolean>; // recibe atributos (seguramente va a ser un id) y si se encuentra un objeto con ese id entonces se lo elimina y devuelve true, si no se encuentra entonces devuelve false
+  deleteObject(_id: ObjectId | string): Promise<Boolean>; // recibe atributos (seguramente va a ser un id) y si se encuentra un objeto con ese id entonces se lo elimina y devuelve true, si no se encuentra entonces devuelve false
   updateObject(parameters: Parameters): Promise<ClassType | null>; // recibe los atributos para modificar un objeto, si se modifica correctamente devuelve el objeto modificado, sino devuelve null
 }
 
