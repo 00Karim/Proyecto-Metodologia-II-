@@ -1,8 +1,12 @@
+import mongoose from "mongoose";
 import { TripModel } from "../models/trip.model.js";
 class LocalTripController {
+    constructor() {
+        console.log("Controller loaded");
+    }
     handleGetObject = async (req, res) => {
         try {
-            const { id = "" } = req.params; // hacemos que sea un string por default asi ts no nos exige que id tenga coherencia con la interfaz determinada (pide que sea string y en este caso empieza siendo undefined)
+            const id = new mongoose.Types.ObjectId(req.params.id);
             const trip = await TripModel.getObject(id);
             if (!trip)
                 return res.status(404).json({ error: "No se encontro el viaje" });
@@ -15,8 +19,8 @@ class LocalTripController {
     };
     handleCreateObject = async (req, res) => {
         try {
-            const { titulo, descripcion } = req.body;
-            const trip = await TripModel.createObject({ titulo, descripcion }); // TODO: agregar los atributos que faltan
+            const { title, description } = req.body;
+            const trip = await TripModel.createObject({ title, description }); // TODO: agregar los atributos que faltan
             return res.status(201).json(trip);
         }
         catch (error) {
@@ -27,7 +31,8 @@ class LocalTripController {
     handleDeleteObject = async (req, res) => {
         try {
             const { id = "" } = req.params;
-            const viajeBorrado = await TripModel.deleteObject({ id });
+            const viajeBorrado = await TripModel.deleteObject(id);
+
             if (viajeBorrado) {
                 return res.status(204).json("Se borro el viaje correctamente");
             }

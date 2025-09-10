@@ -2,27 +2,25 @@ import mongoose, { Schema } from "mongoose";
 const TripSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    origen: { type: String, required: true },
-    destino: { type: String, required: true },
-    participantes: [
+    origin: { type: String, required: true },
+    destination: { type: String, required: true },
+    participants: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Participante",
-            default: ["Sin participantes"]
+            ref: "User"
         }
     ],
-    administradores: [
+    administrators: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Administrador",
+            ref: "User",
             required: true
         }
     ],
-    actividades: [
+    activities: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Activity",
-            default: ["Sin actividades planeadas"]
+            ref: "Activity"
         }
     ]
 });

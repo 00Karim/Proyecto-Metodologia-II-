@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "testCrearTrip": "node dist/tests/crearTrip.js",
+    "testCrearParticipante": "node dist/tests/crearParticipante.js"
   },
   "keywords": [],
   "author": "",

@@ -3,12 +3,12 @@ import { UserController } from "../controllers/user.controller.js";
 
 const users = Router();
 
-users.get("/", UserController.handleGetObject)
+users.get("/:id", UserController.handleGetObject)
 
 users.post("/", UserController.handleCreateObject)
 
 users.delete("/:id", UserController.handleDeleteObject)
 
-users.put("/", UserController.handleUpdateObject)
+users.put("/:id", UserController.handleUpdateObject)
 
 export default users; 

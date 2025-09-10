@@ -1,23 +1,48 @@
 import { Trip } from "./../models/entities/trip.js"; // esta es la instancia de Trip en mongoose, con este objeto es que vamos a modificar la base de datos
+import mongoose from "mongoose";
 class BaseTripModel {
     async getObject(_id) {
-        return null; // placeholder --> aca adentro hay que hacer las consultas de mongodb usando el objeto Trip
+        const trip_elegido = await Trip.findById(_id);
+        if (!trip_elegido)
+            return null;
+        console.log('ANTES:', {
+            admins: trip_elegido.administrators,
+            participants: trip_elegido.participants
+        });
+        if (trip_elegido.administrators?.length > 0)
+            await trip_elegido.populate('administrators');
+        if (trip_elegido.participants?.length > 0)
+            await trip_elegido.populate('participants');
+        if (trip_elegido.activities?.length > 0)
+            await trip_elegido.populate('activities');
+        console.log('DESPUES:', {
+            admins: trip_elegido.administrators,
+            participants: trip_elegido.participants
+        });
+        return trip_elegido;
     }
     async createObject(parameters) {
-        let { titulo, descripcion } = parameters; // TODO: Agregar los parametros que faltan
+        let { title, description, origin, destination, participants, administrators, activities } = parameters;
         const trip = new Trip({
-            titulo,
-            descripcion
+            title,
+            description,
+            origin,
+            destination,
+            participants,
+            administrators,
+            activities
         });
         return trip; // placeholder
     }
-    async deleteObject(parameters) {
-        let { id } = parameters;
-        const viajeBorrado = await Trip.findByIdAndDelete(id);
-        return viajeBorrado !== null;
+    async deleteObject(id) {
+        const deletedTrip = await Trip.findByIdAndDelete(id);
+        return deletedTrip !== null;
     }
     async updateObject(parameters) {
-        return null;
+        const { id, ...updateData } = parameters;
+        if (!id)
+            return null;
+        return await Trip.findByIdAndUpdate(id, updateData, { new: true });
     }
 }
 export const TripModel = new BaseTripModel(); // instanciamos el model para que sea exportado siempre la misma instancia
