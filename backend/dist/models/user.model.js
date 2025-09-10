@@ -13,11 +13,12 @@ class BaseUserModel {
     }
     async createObject(parameters) {
         try {
-            const { nombre, mail, contrasenia } = parameters;
+            const { nombre, mail, contrasenia, permisos } = parameters;
             const usuario_creado = await new User({
                 nombre,
                 mail,
-                contrasenia
+                contrasenia,
+                permisos
             }).save();
             return usuario_creado;
         }
@@ -38,8 +39,8 @@ class BaseUserModel {
     }
     async updateObject(parameters) {
         try {
-            const { _id, nombre, mail, contrasenia } = parameters;
-            const usuario_modificado = await User.findByIdAndUpdate({ _id: _id }, { $set: { nombre: nombre, constrasenia: contrasenia, mail: mail } });
+            const { _id, nombre, permisos } = parameters;
+            const usuario_modificado = await User.findByIdAndUpdate({ _id: _id }, { $set: { nombre: nombre, permisos: permisos } });
             return usuario_modificado;
         }
         catch (error) {
