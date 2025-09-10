@@ -11,14 +11,14 @@ const TripSchema = new Schema<TripDocument>(
             [
                 {
                     type: Schema.Types.ObjectId, 
-                    ref: "Participante"
+                    ref: "User"
                 }
             ],
         administrators: 
             [
                 {
                     type: Schema.Types.ObjectId,
-                    ref: "Administrador",
+                    ref: "User",
                     required: true
                 }
             ],

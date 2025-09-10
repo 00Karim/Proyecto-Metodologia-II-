@@ -7,13 +7,13 @@ const TripSchema = new Schema({
     participants: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Participante"
+            ref: "User"
         }
     ],
     administrators: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Administrador",
+            ref: "User",
             required: true
         }
     ],

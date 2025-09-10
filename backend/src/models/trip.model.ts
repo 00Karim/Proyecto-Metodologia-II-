@@ -21,10 +21,17 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
 
   async getObject(_id: ObjectId | string): Promise<TripDocument | null> {
     const trip_elegido = await Trip.findById(_id)
-    //  .populate('participants')
-    //  .populate('administrators')
-    //  .populate('activities') // TODO: Hay que hacer populate solo si el objeto tiene un objectid dentro de los arrays, sino nos da error porque no tiene nada adentro
-    console.log("HOLA  ", trip_elegido)
+    if (!trip_elegido) return null;
+
+    if(trip_elegido.administrators?.length > 0)
+      await trip_elegido.populate('administrators')
+
+    if(trip_elegido.participants?.length > 0)
+      await trip_elegido.populate('participants')
+
+    if(trip_elegido.activities?.length > 0)
+      await trip_elegido.populate('activities')
+
     return trip_elegido
   }
 
