@@ -5,7 +5,7 @@ import mongoose from "mongoose"
 
 type ObjectId = mongoose.Types.ObjectId
 
-type ModelParams = { _id: string | ObjectId, nombre: string, mail: string, contrasenia: string} // estos son los parametros de la entidad User
+type ModelParams = { _id?: string | ObjectId, nombre?: string, mail?: string, contrasenia?: string, permisos?: string[]} // estos son los parametros de la entidad User
 class BaseUserModel implements Model<UserDocument, ModelParams>{
     async getObject(_id: ObjectId | string): Promise<UserDocument | null> {
         try {
@@ -19,11 +19,12 @@ class BaseUserModel implements Model<UserDocument, ModelParams>{
 
     async createObject(parameters: ModelParams): Promise<UserDocument | null> {
         try {
-            const { nombre, mail, contrasenia } = parameters
+            const { nombre, mail, contrasenia, permisos } = parameters
             const usuario_creado = await new User({
                 nombre,
                 mail,
-                contrasenia
+                contrasenia,
+                permisos
             }).save()
             return usuario_creado
         } catch (error: any) {
@@ -44,11 +45,11 @@ class BaseUserModel implements Model<UserDocument, ModelParams>{
 
     async updateObject(parameters: ModelParams): Promise<UserDocument | null> {
         try {
-            const { _id, nombre, mail, contrasenia } = parameters
+            const { _id, nombre, permisos } = parameters
             const usuario_modificado = await User.findByIdAndUpdate
                 (
                     {_id: _id},
-                    {$set: { nombre: nombre, constrasenia: contrasenia, mail: mail }}
+                    {$set: { nombre: nombre, permisos: permisos }}
                 )
             return usuario_modificado
         } catch (error: any) {
