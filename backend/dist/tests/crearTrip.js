@@ -10,12 +10,11 @@ async function CrearUnTrip(){
         const trip = new Trip({
             title: "Viaje a Cordoba",
             description: "Un viaje de prueba para testear mongoose.",
-            origen: "Buenos Aires",
-            destino: "Mendoza",
-            participantes: [new mongoose.Types.ObjectId("68bf846e3820d9d431477f9e")], // later fill with ObjectId of real users
-            administradores: [new mongoose.Types.ObjectId()], // placeholder
-            actividades: [],
+            origin: "Buenos Aires",
+            destination: "Mendoza",
+            administrators: [new mongoose.Types.ObjectId()], // placeholder
         });
+        // por ahora participantes y actividades las dejamos vacias
 
         await trip.save()
 

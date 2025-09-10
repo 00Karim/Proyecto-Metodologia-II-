@@ -5,7 +5,11 @@ const UserSchema = new Schema<UserDocument>(
     {
         nombre: {type:String, required:true},
         mail: {type:String, required:true},
-        contrasenia: {type: String, required:true}
+        contrasenia: {type: String, required:true},
+        permisos: 
+            [
+                {type: String}
+            ]
     }
 );
 

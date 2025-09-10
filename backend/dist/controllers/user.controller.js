@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { UserModel } from "../models/user.model.js";
 class BaseUserController {
     handleGetObject = async (req, res) => {
