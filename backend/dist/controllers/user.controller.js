@@ -48,7 +48,7 @@ class BaseUserController {
             const { nombre, permisos } = req.body;
             const usuario_nuevo = await UserModel.updateObject({ _id, nombre, permisos });
             if (usuario_nuevo) {
-                return res.status(201).json("Usuario creado correctamente: " + usuario_nuevo);
+                return res.status(201).json("Usuario modificado correctamente: " + usuario_nuevo);
             }
             else {
                 return res.status(400).json({ error: "Hubo un error al modificar el usuario" });

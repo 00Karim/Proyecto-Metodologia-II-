@@ -3,10 +3,22 @@ import mongoose from "mongoose";
 class BaseTripModel {
     async getObject(_id) {
         const trip_elegido = await Trip.findById(_id);
-        //  .populate('participants')
-        //  .populate('administrators')
-        //  .populate('activities') // TODO: Hay que hacer populate solo si el objeto tiene un objectid dentro de los arrays, sino nos da error porque no tiene nada adentro
-        console.log("HOLA  ", trip_elegido);
+        if (!trip_elegido)
+            return null;
+        console.log('ANTES:', {
+            admins: trip_elegido.administrators,
+            participants: trip_elegido.participants
+        });
+        if (trip_elegido.administrators?.length > 0)
+            await trip_elegido.populate('administrators');
+        if (trip_elegido.participants?.length > 0)
+            await trip_elegido.populate('participants');
+        if (trip_elegido.activities?.length > 0)
+            await trip_elegido.populate('activities');
+        console.log('DESPUES:', {
+            admins: trip_elegido.administrators,
+            participants: trip_elegido.participants
+        });
         return trip_elegido;
     }
     async createObject(parameters) {
