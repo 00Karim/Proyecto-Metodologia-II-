@@ -1,7 +1,7 @@
 import { Document, type ObjectId } from "mongoose";
 import mongoose from "mongoose";
 import type { Request, Response } from "express";
-import type { Schema } from "inspector/promises";
+//import type { Schema } from "inspector/promises";
 
 
 // ---- INICIO INTERFACES DE DOCUMENTOS ----
@@ -23,6 +23,7 @@ export interface ActivityDocument extends Document {
 
 // TODO: estructura de un documento de tipo Trip
 export interface TripDocument extends Document {
+  _id: string;
   title: string;
   description: string;
   origin: string;

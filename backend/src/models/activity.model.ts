@@ -1,3 +1,4 @@
+import mongoose from "mongoose" 
 import type { ActivityDocument } from "../types+interfaces/typesInterfaces.js";
 import { Activity } from "./entities/activity.js";
 import type { Model } from "../types+interfaces/typesInterfaces.js";
@@ -8,6 +9,8 @@ type ModelParams = {
   descripcion?: string;
   votos?: number;
 };
+
+type ObjectId = mongoose.Types.ObjectId
 
 class BaseActivityModel implements Model<ActivityDocument, ModelParams> {
   async getObject(id: string): Promise<ActivityDocument | null> {
@@ -45,12 +48,12 @@ class BaseActivityModel implements Model<ActivityDocument, ModelParams> {
     }
   }
 
-  async deleteObject(parameters: ModelParams): Promise<boolean> {
+  async deleteObject(id: ObjectId | string): Promise<boolean> {
     try {
-      if (!parameters.id) {
+      if (!id) {
         throw new Error("Se requiere un id para eliminar");
       }
-      const result = await Activity.findByIdAndDelete(parameters.id);
+      const result = await Activity.findByIdAndDelete(id);
       return result ? true : false;
     } catch (error) {
       console.error("Error al eliminar actividad:", error);

@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import type { Request, Response } from "express";
-import type { TripDocument } from "../types+interfaces/typesInterfaces.js";
+import type { TripDocument } from "../../src/types+interfaces/typesInterfaces.js";
 import { TripModel } from "../models/trip.model.js";
-import type { Controller } from "../types+interfaces/typesInterfaces.js"
+import type { Controller } from "../../src/types+interfaces/typesInterfaces.js"
 
 class LocalTripController implements Controller<TripDocument, void>{
     constructor(){
@@ -22,6 +22,16 @@ class LocalTripController implements Controller<TripDocument, void>{
             return res.status(500).json({ error: "Error del servidor!" });
         }
     };
+
+    handleGetAllObjects = async (req: Request, res: Response) => {
+        try {
+            const trips = await TripModel.getAllObjects();
+            res.status(200).json(trips);
+        }catch(error){
+            console.error("Error getting all trips: ", error);
+            res.status(500).json({error: "Error del servidor"});
+        }
+    }
 
     handleCreateObject = async (req: Request, res: Response) => {
         try {
