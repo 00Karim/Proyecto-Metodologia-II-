@@ -5,20 +5,12 @@ class BaseTripModel {
         const trip_elegido = await Trip.findById(_id);
         if (!trip_elegido)
             return null;
-        console.log('ANTES:', {
-            admins: trip_elegido.administrators,
-            participants: trip_elegido.participants
-        });
         if (trip_elegido.administrators?.length > 0)
             await trip_elegido.populate('administrators');
         if (trip_elegido.participants?.length > 0)
             await trip_elegido.populate('participants');
         if (trip_elegido.activities?.length > 0)
             await trip_elegido.populate('activities');
-        console.log('DESPUES:', {
-            admins: trip_elegido.administrators,
-            participants: trip_elegido.participants
-        });
         return trip_elegido;
     }
     async createObject(parameters) {

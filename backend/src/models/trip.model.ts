@@ -1,6 +1,6 @@
-import type { TripDocument } from "../types+interfaces/typesInterfaces.js"; // este es el tipo de un documento de tipo Trip
+import type { TripDocument } from "../../src/types+interfaces/typesInterfaces.js"; // este es el tipo de un documento de tipo Trip
 import { Trip } from "./../models/entities/trip.js"; // esta es la instancia de Trip en mongoose, con este objeto es que vamos a modificar la base de datos
-import type { Model } from "../types+interfaces/typesInterfaces.js"
+import type { Model } from "../../src/types+interfaces/typesInterfaces.js"
 import mongoose from "mongoose"
 
 // clase que implementa la interfaz
@@ -33,6 +33,15 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
       await trip_elegido.populate('activities')
 
     return trip_elegido
+  }
+
+  async getAllObjects(): Promise<TripDocument[]>{
+    try{
+      return await Trip.find().populate('administrators participants activities')
+    }catch(error){
+      console.error("Error getting all trips:", error)
+      return []
+    }
   }
 
   async createObject(parameters: ModelParams): Promise<TripDocument> { // TODO: `parameters: ModelParams` es algo temporal, despues podriamos hacer un type de parametros distinto para cada metodo

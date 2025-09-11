@@ -34,7 +34,7 @@ class LocalActivityController {
             if (!id) {
                 return res.status(400).json({ error: "Se requiere un id" });
             }
-            const deleted = await ActivityModel.deleteObject({ id });
+            const deleted = await ActivityModel.deleteObject(id);
             if (deleted) {
                 return res.status(204).send();
             }

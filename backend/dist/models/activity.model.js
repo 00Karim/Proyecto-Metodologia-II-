@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Activity } from "./entities/activity.js";
 class BaseActivityModel {
     async getObject(id) {
@@ -35,12 +36,12 @@ class BaseActivityModel {
             return null;
         }
     }
-    async deleteObject(parameters) {
+    async deleteObject(id) {
         try {
-            if (!parameters.id) {
+            if (!id) {
                 throw new Error("Se requiere un id para eliminar");
             }
-            const result = await Activity.findByIdAndDelete(parameters.id);
+            const result = await Activity.findByIdAndDelete(id);
             return result ? true : false;
         }
         catch (error) {
