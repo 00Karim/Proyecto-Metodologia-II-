@@ -35,9 +35,15 @@ class LocalTripController implements Controller<TripDocument, void>{
 
     handleCreateObject = async (req: Request, res: Response) => {
         try {
-            const { title, description } = req.body;
+            const { title, description, origin, destination, administrators } = req.body;
 
-            const trip = await TripModel.createObject({ title, description }); // TODO: agregar los atributos que faltan
+            const trip = await TripModel.createObject({
+                title,
+                description,
+                origin,
+                destination,
+                administrators   
+            });
 
             return res.status(201).json(trip);
         } catch (error) {

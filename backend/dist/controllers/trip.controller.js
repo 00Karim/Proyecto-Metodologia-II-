@@ -17,10 +17,26 @@ class LocalTripController {
             return res.status(500).json({ error: "Error del servidor!" });
         }
     };
+    handleGetAllObjects = async (req, res) => {
+        try {
+            const trips = await TripModel.getAllObjects();
+            res.status(200).json(trips);
+        }
+        catch (error) {
+            console.error("Error getting all trips: ", error);
+            res.status(500).json({ error: "Error del servidor" });
+        }
+    };
     handleCreateObject = async (req, res) => {
         try {
-            const { title, description } = req.body;
-            const trip = await TripModel.createObject({ title, description }); // TODO: agregar los atributos que faltan
+            const { title, description, origin, destination, administrators } = req.body;
+            const trip = await TripModel.createObject({
+                title,
+                description,
+                origin,
+                destination,
+                administrators
+            });
             return res.status(201).json(trip);
         }
         catch (error) {
