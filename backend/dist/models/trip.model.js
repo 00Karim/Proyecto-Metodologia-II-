@@ -13,18 +13,35 @@ class BaseTripModel {
             await trip_elegido.populate('activities');
         return trip_elegido;
     }
+    async getAllObjects() {
+        try {
+            return await Trip.find()
+                .populate('administrators')
+                .populate('participants')
+                .populate('activities');
+        }
+        catch (error) {
+            console.error("Error getting all trips:", error);
+            return [];
+        }
+    }
     async createObject(parameters) {
-        let { title, description, origin, destination, participants, administrators, activities } = parameters;
-        const trip = new Trip({
-            title,
-            description,
-            origin,
-            destination,
-            participants,
-            administrators,
-            activities
-        });
-        return trip; // placeholder
+        try {
+            let { title, description, origin, destination, administrators } = parameters;
+            const trip = new Trip({
+                title,
+                description,
+                origin,
+                destination,
+                administrators
+            });
+            await trip.save();
+            return trip; // placeholder
+        }
+        catch (error) {
+            console.error("Error creando un trip:", error);
+            return null;
+        }
     }
     async deleteObject(id) {
         const deletedTrip = await Trip.findByIdAndDelete(id);

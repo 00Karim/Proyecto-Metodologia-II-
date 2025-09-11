@@ -37,26 +37,34 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
 
   async getAllObjects(): Promise<TripDocument[]>{
     try{
-      return await Trip.find().populate('administrators participants activities')
+      return await Trip.find()
+        .populate('administrators')
+        .populate('participants')
+        .populate('activities');
     }catch(error){
       console.error("Error getting all trips:", error)
       return []
     }
   }
 
-  async createObject(parameters: ModelParams): Promise<TripDocument> { // TODO: `parameters: ModelParams` es algo temporal, despues podriamos hacer un type de parametros distinto para cada metodo
-    let { title, description, origin, destination, participants, administrators, activities } = parameters 
-    const trip = new Trip({
-      title,
-      description,
-      origin,
-      destination,
-      participants,
-      administrators,
-      activities
-    });
+  async createObject(parameters: ModelParams): Promise<TripDocument | null> { // TODO: `parameters: ModelParams` es algo temporal, despues podriamos hacer un type de parametros distinto para cada metodo
+    try {
+      let { title, description, origin, destination, administrators } = parameters 
+      const trip = new Trip({
+        title,
+        description,
+        origin,
+        destination,
+        administrators
+      });
 
-    return trip; // placeholder
+      await trip.save()
+
+      return trip; // placeholder
+    } catch (error) {
+      console.error("Error creando un trip:", error)
+      return null
+    }
   }
 
   async deleteObject(id: ObjectId | string): Promise<Boolean> {
