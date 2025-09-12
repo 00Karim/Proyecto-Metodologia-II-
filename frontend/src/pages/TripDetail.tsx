@@ -63,13 +63,13 @@ export default function TripDetail() {
   if (error) return <div className="card status">Error: {error}</div>;
   if (!trip) return <div className="card status">Viaje no encontrado</div>;
 
-  const amIParticipant = trip.participantes?.some((p: any) => p._id === user?._id);
+  const amIParticipant = trip.participants?.some((p: any) => p._id === user?._id);
 
   return (
     <div className="card">
-      <h2>{trip.origen} → {trip.destino}</h2>
-      <p>Creado por: {trip.creator?.nombre || trip.creator?.mail}</p>
-      <p>Participantes: {trip.participantes?.length || 0}</p>
+      <h2>{trip.origin} → {trip.destination}</h2>
+      <p>Creado por: {trip.administrators[0]?.nombre || trip.administrators[0]?.mail}</p>
+      <p>Participantes: {trip.participants?.length || 0}</p>
 
       {!amIParticipant ? (
         <button className="btn" onClick={handleJoin}>Unirme al viaje</button>
@@ -81,9 +81,9 @@ export default function TripDetail() {
 
       <h3>Actividades</h3>
       <ul className="list">
-        {trip.actividades && trip.actividades.length > 0 ? (
-          trip.actividades.map((a: any) => (
-            <li key={a._id} className="item">
+        {trip.activities && trip.activities.length > 0 ? (
+          trip.activities.map((a: any) => (
+            <li key={a._id} className="item"> {/* // TODO: Cambiar los nombres de los atributos a ingles aca y en el model*/}
               <h4>{a.nombre}</h4>
               <p>{a.descripcion}</p>
               <p>Votos: {a.votos || 0}</p>

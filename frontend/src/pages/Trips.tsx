@@ -4,8 +4,8 @@ import type { Trip } from "../types";
 import { Link } from "react-router-dom";
 
 export default function Trips() {
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [trips, setTrips] = useState<Trip[]>([]); // en esta variable de estado guardamos los trips que vienen del back
+  const [loading, setLoading] = useState(true); // con esta variable nos aseguramos de mostrar la lista una vez que se haya cargado todos los trips correctamente y en el mientas tanto se muestra un texto que dice cargando
   const [error, setError] = useState<string| null>(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function Trips() {
 
   if (loading) return <div className="card status">Cargando viajes...</div>;
   if (error) return <div className="card status">Error: {error}</div>;
-
+  console.log(trips)
   return (
     <section className="row">
       <div className="card">
@@ -37,9 +37,9 @@ export default function Trips() {
           <ul className="list">
             {trips.map((t: any) => (
               <li key={t._id} className="item">
-                <h4>{t.origen} → {t.destino}</h4>
-                <p>Creado por: {t.creator?.nombre || t.creator?.mail || '—'}</p>
-                <p>Participantes: {t.participantes ? t.participantes.length : 0}</p>
+                <h4>{t.origin} → {t.destination}</h4>
+                <p>Creado por: {t.administrators[0]?.nombre || t.administrators[0]?.mail || '—'}</p>
+                <p>Participantes: {t.participants ? t.participants.length : 0}</p>
                 <Link to={`/trips/${t._id}`} className="btn">Ver detalle</Link>
               </li>
             ))}
