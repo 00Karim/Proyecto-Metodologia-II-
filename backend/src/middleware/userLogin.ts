@@ -7,7 +7,7 @@ interface LoginRequest extends Request{
 }
 
 class UserLoginModel{
-    async verificarUsuario(nombre: string, contrasenia: string){
+    async verificarCredencialesUsuario(nombre: string, contrasenia: string){
         try {
             const usuario = await User.findOne({
                 where: { nombre, contrasenia }
