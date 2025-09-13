@@ -8,9 +8,11 @@ export default function Login() {
   const [contrasenia, setContrasenia] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
-  const location = useLocation(); 
-  const { setUser } = useAuth();
+  // TODO: chequear si existe el usuario
+
+  const navigate = useNavigate(); // esto es para la ruta
+  const location = useLocation(); // esto es para la url
+  const { setUser } = useAuth(); // guarda la informacion del usuario --> usuario y contrasenia --> para ver si esta autenticado o si existe 
 
   // Si venía redirigido desde RequireAuth, tomamos esa ruta
   const from = (location.state as any)?.from?.pathname || "/";
@@ -26,7 +28,7 @@ export default function Login() {
       setUser(res.user);
 
       // 👇 redirige a la ruta que intentaba abrir antes del login
-      navigate(from, { replace: true });
+      navigate(from, { replace: true }); // TODO: hacer que te rediriga a la ruta viajes directamente, en vez de a la ruta que tocaste antes
     } catch (err: any) {
       setError(err.response?.data?.message || "Error al iniciar sesión");
     }

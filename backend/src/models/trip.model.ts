@@ -47,7 +47,7 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
     }
   }
 
-  async createObject(parameters: ModelParams): Promise<TripDocument | null> { // TODO: `parameters: ModelParams` es algo temporal, despues podriamos hacer un type de parametros distinto para cada metodo
+  async createObject(parameters: ModelParams): Promise<TripDocument | null> { 
     try {
       let { title, description, origin, destination, administrators } = parameters 
       const trip = new Trip({
