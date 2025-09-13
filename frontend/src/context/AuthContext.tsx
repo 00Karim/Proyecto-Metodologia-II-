@@ -9,7 +9,7 @@ interface AuthContextValue {
 export const AuthContext = createContext<AuthContextValue>({ user: null, setUser: () => {}, logout: () => {} });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(null); // si importas user desde otro archivo podes acceder al token y a la informacion del usuario
 
   useEffect(() => {
     try {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("token"); 
     localStorage.removeItem("user");
     setUser(null);
   };
