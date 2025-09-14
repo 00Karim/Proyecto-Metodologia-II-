@@ -3,15 +3,15 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
-export const api = axios.create({
+export const api = axios.create({ // aca creamos una configuracion por defecto para todas las requests, asi no tenemos que repetir la url y los headers a cada rato
   baseURL: API_URL,
   headers: { "Content-Type": "application/json" }
 });
 
-// add interceptor to include token if present
+// a continuacion, hacemos que todas las requests incluyan el token, si existe. Asi no tenemos que agregarlo manualmente en todos los fetch
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token && config.headers) {
+  if (token && config.headers) { // si no existe el token o por alguna razon no se incluyo un header (si intentamos agregar un header y el objeto de header no esta agregado en la request interceptada entonces da error --> lo ponemos por si a caso pero realmente no es muy necesario), entonces no agregamos el token a los headers
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
@@ -47,10 +47,10 @@ export const voteActivity = async (tripId: string, activityId: string) => {
 
 // Auth
 export const login = async (payload: { mail: string; contrasenia: string }) => {
-  const { data } = await api.post("/auth/login", payload);
+  const { data } = await api.post("/api/userAuth/login", payload);
   return data;
 };
 export const register = async (payload: { nombre: string; mail: string; contrasenia: string }) => {
-  const { data } = await api.post("/auth/register", payload);
+  const { data } = await api.post("/api/userAuth/register", payload);
   return data;
 };

@@ -23,7 +23,7 @@ class BaseUserController implements Controller<UserDocument, void>{
 
     handleCreateObject = async (req: Request, res: Response) => {
         try {
-            const { nombre, mail, contrasenia, permisos } = req.body
+            const { nombre, mail, contrasenia, permisos  } = req.body
 
             const nuevo_usuario = await UserModel.createObject({nombre, mail, contrasenia, permisos})
 
