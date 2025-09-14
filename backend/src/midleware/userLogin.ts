@@ -7,6 +7,7 @@ interface LoginRequest extends Request{
 }
 
 class UserLoginModel{
+
     async verificarCredencialesUsuario(nombre: string, contrasenia: string){
         try {
             const usuario = await User.findOne({
@@ -21,7 +22,10 @@ class UserLoginModel{
     generarToken(usuario: any){
         const payload = { id_usuario: usuario._id }
         const token = jwt.sign(payload, process.env.JWT_SECRET || 'palabra')        
-        return [token, usuario._id]; // guardamos el id de usuario en el payload y despues lo podemos usar para saber si un usuario dio like o no dio like a un trip, etc
+        return {
+                token,
+                userId: usuario._id
+        }; // guardamos el id de usuario en el payload y despues lo podemos usar para saber si un usuario dio like o no dio like a un trip, etc
     }
 
     verificarToken(req: LoginRequest, res: Response, next: NextFunction){

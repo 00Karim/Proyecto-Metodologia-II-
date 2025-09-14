@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Register() {
   const [nombre, setNombre] = useState(""); const [mail, setMail] = useState(""); const [contrasenia, setContrasenia] = useState(""); const [error, setError] = useState(""); 
   const navigate = useNavigate();
-  // TODO: Agregar el usuario a la db
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
