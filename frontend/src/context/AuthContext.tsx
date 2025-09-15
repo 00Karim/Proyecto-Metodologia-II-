@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("user");
+      const raw = localStorage.getItem("userId");
       if (raw) setUser(JSON.parse(raw));
     } catch (e) {
       console.warn("No stored user");
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem("token"); 
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     setUser(null);
   };
 

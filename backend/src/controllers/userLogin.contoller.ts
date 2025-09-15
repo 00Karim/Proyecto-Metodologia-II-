@@ -26,12 +26,12 @@ class userLoginController{
     handleLogin = async(req: Request, res: Response) => {
         try {
             const { mail, contrasenia } = req.body
-            const loggedUser = await User.findOne({
-                where: { mail, contrasenia }
-            })
+            console.log("mail ", mail, " contrasenia: ", contrasenia) //TODO: borrar
+            const loggedUser = await User.findOne({ mail, contrasenia })
+            console.log(loggedUser) // TODO: borrar
             if (loggedUser){
-                const token = UserLogin.generarToken
-                return res.status(200).json({token})
+                const { token, userId } = UserLogin.generarToken(loggedUser) // extremos el userId y el token de la respuesta de la funcion generar token, que nos devuelve el token y el id del usuario
+                return res.status(200).json({ token, userId } ) // mandamos esa informacion al front para guardarla en el localStorage
             }
             else{ 
                 return res.status(404).json({error: "El usuario ingresado no existe"})
