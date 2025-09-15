@@ -57,9 +57,7 @@ export default function App() {
           <Route
             path="/nuevo"
             element={
-              <RequireAuth>
                 <CreateTrip />
-              </RequireAuth>
             }
           />
           <Route path="/trips/:id" element={<TripDetail />} />

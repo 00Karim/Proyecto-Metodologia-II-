@@ -17,6 +17,12 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+//Users
+export const getUsers = async(query: string) => {
+  const { data } = await api.get("/api/users?search=${encodeURIComponent(query)}") //TODO: CREAREL ENDPOINT
+  return data;
+}
+
 // Trips
 export const listTrips = async () => {
   const { data } = await api.get("/api/trips");
