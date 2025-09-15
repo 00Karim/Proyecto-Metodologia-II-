@@ -2,6 +2,21 @@ import mongoose from "mongoose";
 import { UserModel } from "../models/user.model.js";
 import { User } from "../models/entities/user.js";
 class BaseUserController {
+    handleGetByName = async (req, res) => {
+        try {
+            const query = req.query.q;
+            if (!query || query.length < 3) {
+                return res.status(400).json({ message: "La búsqueda debe tener al menos 3 caracteres" });
+            }
+            const users = await User.find({
+                nombre: { $regex: query, $options: "i" }
+            }).select("_id nombre");
+        }
+        catch (e) {
+            console.error("Error buscando usuarios: ", e);
+            res.status(500).json({ message: "Error interno del servidor" });
+        }
+    };
     handleGetObject = async (req, res) => {
         try {
             const id = new mongoose.Types.ObjectId(req.params.id);

@@ -1,15 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createTrip, getUsers } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../types"
 
 export default function CreateTrip() {
-  const [origin, setOrigin] = useState(""); const [destination, setDestination] = useState("");  const [title, setTitle] = useState("");  const [description, setDescription] = useState(""); const [participants, setParticipants] = useState<User[]>([]); const [search, setSearch] = useState(""); const [results, setResults] = useState<User[]>([]); const [error, setError] = useState<string | null>(null);
+  const [origin, setOrigin] = useState(""); const [destination, setDestination] = useState("");  const [title, setTitle] = useState("");  const [description, setDescription] = useState(""); const [administrators, setAdministrators] = useState<User | null>(null); const [participants, setParticipants] = useState<User[]>([]); const [search, setSearch] = useState(""); const [results, setResults] = useState<User[]>([]); const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedAdmin = localStorage.getItem("userId")
+    if(storedAdmin){
+      try{
+        setAdministrators({ _id: storedAdmin } as User)
+        if(!participants.find(p => p._id === storedAdmin))
+          setParticipants([{ _id: storedAdmin } as User])
+      }catch(e){
+        console.error("Error parsing admin id desde el local storage", e)
+      }
+    }
+  }, [])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    //Validacion de que administrators no sea null
+    if (!administrators) {
+    setError("Debes iniciar sesión para crear un viaje.");
+    return;
+  }
+
     if (origin.trim().length < 5 || destination.trim().length < 5) {
       setError("Origen y destino deben tener al menos 5 caracteres.");
       return;
@@ -20,6 +40,7 @@ export default function CreateTrip() {
         description: description.trim(), 
         origin: origin.trim(), 
         destination: destination.trim(), 
+        administrators: administrators._id,
         participants: participants.map(p => p._id)
       });
       navigate("/");
