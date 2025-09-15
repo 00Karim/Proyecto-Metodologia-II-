@@ -3,6 +3,8 @@ import { UserController } from "../controllers/user.controller.js";
 
 const users = Router();
 
+users.get("/search", UserController.handleGetByName)
+
 users.get("/:id", UserController.handleGetObject)
 
 users.post("/", UserController.handleCreateObject)
