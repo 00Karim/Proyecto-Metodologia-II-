@@ -24,8 +24,8 @@ export default function Login() {
     try {
       const res = await login({ mail, contrasenia });
       localStorage.setItem("token", res.token);
-      localStorage.setItem("user", JSON.stringify(res.user));
-      setUser(res.user);
+      localStorage.setItem("userId", JSON.stringify(res.userId));
+      setUser(res.userId);
 
       // 👇 redirige a la ruta que intentaba abrir antes del login
       navigate(from, { replace: true }); // TODO: hacer que te rediriga a la ruta viajes directamente, en vez de a la ruta que tocaste antes

@@ -6,6 +6,6 @@ const userLogin = Router()
 
 userLogin.post("/register", UserLoginController.handleRegister)
 
-userLogin.get("/login", UserLoginController.handleLogin)
+userLogin.post("/login", UserLoginController.handleLogin)
 
 export default userLogin
