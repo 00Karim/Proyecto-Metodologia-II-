@@ -24,7 +24,7 @@ export default function Login() {
     try {
       const res = await login({ mail, contrasenia });
       localStorage.setItem("token", res.token);
-      localStorage.setItem("userId", JSON.stringify(res.userId));
+      localStorage.setItem("userId", res.userId);
       setUser(res.userId);
 
       // 👇 redirige a la ruta que intentaba abrir antes del login

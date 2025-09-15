@@ -68,6 +68,7 @@ export default function TripDetail() {
   return (
     <div className="card">
       <h2>{trip.origin} → {trip.destination}</h2>
+      <p>Descripcion: {trip.description}</p>
       <p>Creado por: {trip.administrators[0]?.nombre || trip.administrators[0]?.mail}</p>
       <p>Participantes: {trip.participants?.length || 0}</p>
 
