@@ -17,6 +17,8 @@ class BaseUserController implements Controller<UserDocument, void>{
             const users = await User.find({
                 nombre: {$regex: query, $options: "i"}
             }).select("_id nombre")
+
+            return res.json(users)
         }catch(e){
             console.error("Error buscando usuarios: ", e);
             res.status(500).json({ message: "Error interno del servidor" });

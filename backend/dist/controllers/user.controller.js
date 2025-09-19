@@ -11,6 +11,7 @@ class BaseUserController {
             const users = await User.find({
                 nombre: { $regex: query, $options: "i" }
             }).select("_id nombre");
+            return res.json(users);
         }
         catch (e) {
             console.error("Error buscando usuarios: ", e);

@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import axios from "axios";
+import type { User } from "../types"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
@@ -18,9 +19,14 @@ api.interceptors.request.use((config) => {
 });
 
 //Users
-export const getUsers = async(query: string) => {
-  const { data } = await api.get("/api/users?search=${encodeURIComponent(query)}") //TODO: CREAREL ENDPOINT
-  return data;
+export const getUsers = async(query: string): Promise<User[]> => {
+  try{
+    const res = await axios.get<User[]>(`${API_URL}/api/users/search?q=${encodeURIComponent(query)}`)
+    return res.data
+  }catch(e){  
+    console.error("Error buscando usuarios: ", e)
+    throw e
+  }
 }
 
 // Trips
