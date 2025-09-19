@@ -10,13 +10,20 @@ export default function CreateTrip() {
   useEffect(() => {
     const storedAdmin = localStorage.getItem("userId")
     if(storedAdmin){
-      try{
-        setAdministrators({ _id: storedAdmin } as User)
-        if(!participants.find(p => p._id === storedAdmin))
-          setParticipants([{ _id: storedAdmin } as User])
-      }catch(e){
-        console.error("Error parsing admin id desde el local storage", e)
+      const fetchAdmin = async () => {
+        try{
+          const res = await fetch(`http://localhost:4000/api/users/${storedAdmin}`)
+          if(!res.ok) throw new Error("No se pudo obtener el admin")
+          const adminData: User = await res.json()
+
+          setAdministrators(adminData)
+          if(!participants.find(p => p._id === storedAdmin))
+            setParticipants([adminData])
+        }catch(e){
+          console.error("Error parsing admin id desde el local storage", e)
+        }
       }
+      fetchAdmin()
     }
   }, [])
 
@@ -88,7 +95,7 @@ export default function CreateTrip() {
         <label className="label">Destino</label>
         <input className="input" placeholder="Ciudad destino" value={destination} onChange={e => setDestination(e.target.value)} />
 
-        {/* 🔎 Buscador de participantes */}
+        {/* Buscador de participantes */}
         <label className="label">Buscar participantes</label>
         <input
           className="input"
@@ -98,26 +105,34 @@ export default function CreateTrip() {
         />
 
         {results.length > 0 && (
-          <ul className="dropdown">
-            {results.map(user => (
-              <li key={user._id} onClick={() => addParticipant(user)}>
-                {user.nombre}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {/* 👥 Participantes ya agregados */}
-        {participants.length > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <p>Participantes seleccionados:</p>
-            <ul>
-              {participants.map(u => (
-                <li key={u._id}>{u.nombre}</li>
+          <div className="dropdown-container">
+            <ul className="dropdown-list">
+              {results.map(user => (
+                <li
+                  key={user._id}
+                  className="dropdown-item"
+                  onClick={() => addParticipant(user)}
+                >
+                  {user.nombre}
+                </li>
               ))}
             </ul>
           </div>
         )}
+
+        {/* Participantes ya agregados */}
+        {participants.length > 0 && (
+          <div style={{ marginTop: 10 }}>
+            <p>Participantes seleccionados:</p>
+            <ul>
+              {participants.map(u => {
+                console.log(u); 
+                return <li key={u._id}>{u.nombre}</li>;
+              })}
+            </ul>
+          </div>
+        )}
+
 
         {error && <p className="status" style={{marginTop:12}}>⚠️ {error}</p>}
 
