@@ -8,4 +8,4 @@ export const connectDB = async() => {
         console.error("MongoDB no ha sido conectado correctamente", err);
         process.exit(1);
     }
-};
+}; // TODO: Implementar singleton

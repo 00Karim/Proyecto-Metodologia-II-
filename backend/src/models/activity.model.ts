@@ -3,6 +3,9 @@ import type { ActivityDocument } from "../types+interfaces/typesInterfaces.js";
 import { Activity } from "./entities/activity.js";
 import type { Model } from "../types+interfaces/typesInterfaces.js";
 
+// TODO: Agregar observer a activity para que se mande un mail a los usuarios participantes del
+// trip cuando para que voten 
+
 type ModelParams = {
   id?: string;
   nombre?: string;
