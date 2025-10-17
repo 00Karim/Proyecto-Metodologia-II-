@@ -8,3 +8,11 @@ const ActivitySchema = new Schema<ActivityDocument>({
 });
 
 export const Activity = model<ActivityDocument>("Activity", ActivitySchema);
+
+// TODO: 
+//Tipos de activity para implementar Factory
+// Tour cultural historico
+// Tour gastronomico
+// Tour de naturaleza
+// Salida nocturna
+// Salida en bici

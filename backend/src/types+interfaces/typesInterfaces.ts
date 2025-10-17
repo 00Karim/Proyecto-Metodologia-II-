@@ -21,7 +21,7 @@ export interface ActivityDocument extends Document {
   votos: number;
 }
 
-// TODO: estructura de un documento de tipo Trip
+// estructura de un documento de tipo Trip
 export interface TripDocument extends Document {
   _id: string;
   title: string;

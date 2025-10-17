@@ -10,6 +10,7 @@ const UserSchema = new Schema<UserDocument>(
             [
                 {type: String}
             ]
+        // TODO: (opcional/revisar) Agregar un array de trips
     }
 );
 
