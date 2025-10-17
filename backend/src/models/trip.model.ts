@@ -83,6 +83,8 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
       { new:true}
     );
   }
+
+  // TODO: Hacer metodo agregar usuario 
 }
 
 export const TripModel = new BaseTripModel() // instanciamos el model para que sea exportado siempre la misma instancia
