@@ -8,6 +8,7 @@ type ModelParams = {
   nombre?: string;
   descripcion?: string;
   votos?: number;
+  tripId?: string; 
 };
 
 type ObjectId = mongoose.Types.ObjectId
@@ -33,13 +34,14 @@ class BaseActivityModel implements Model<ActivityDocument, ModelParams> {
 
   async createObject(parameters: ModelParams): Promise<ActivityDocument | null> {
     try {
-      if (!parameters.nombre || !parameters.descripcion) {
+      if (!parameters.nombre || !parameters.descripcion || !parameters.tripId) {
         throw new Error("Faltan campos obligatorios: nombre y descripcion");
       }
       const newActivity = new Activity({
         nombre: parameters.nombre,
         descripcion: parameters.descripcion,
         votos: parameters.votos ?? 0,
+        tripId: new mongoose.Types.ObjectId(parameters.tripId),
       });
       return await newActivity.save();
     } catch (error) {

@@ -19,6 +19,7 @@ export interface ActivityDocument extends Document {
   nombre: string;
   descripcion: string;
   votos: number;
+  tripId: string;
 }
 
 // TODO: estructura de un documento de tipo Trip
@@ -30,7 +31,7 @@ export interface TripDocument extends Document {
   destination: string;
   participants: ObjectId[];
   administrators: ObjectId[];
-  activities: ObjectId[];
+  activities: mongoose.Types.ObjectId[];
 }
 
 // ---- FIN INTERFACES DE DOCUMENTOS ----
