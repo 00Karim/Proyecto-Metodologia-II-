@@ -49,12 +49,13 @@ class BaseTripModel implements Model<TripDocument, ModelParams> {
 
   async createObject(parameters: ModelParams): Promise<TripDocument | null> { 
     try {
-      let { title, description, origin, destination, administrators } = parameters 
+      let { title, description, origin, destination, participants, administrators } = parameters 
       const trip = new Trip({
         title,
         description,
         origin,
         destination,
+        participants,
         administrators
       });
 
