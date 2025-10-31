@@ -4,6 +4,7 @@ import CreateTrip from "./pages/CreateTrip";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import TripDetail from "./pages/TripDetail";
+import MyTrips from "./pages/MyTrips";
 import { useAuth } from "./hooks/useAuth";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -33,6 +34,9 @@ export default function App() {
           </NavLink>
           {user ? (
             <>
+              <NavLink to="/my-trips" className={({ isActive }) => (isActive ? "active" : "")}>
+                Tus viajes
+              </NavLink>
               <span style={{ marginLeft: 10 }}>Hola, {user.nombre || user.mail}</span>
               <button className="btn" style={{ marginLeft: 10 }} onClick={logout}>
                 Logout
@@ -62,6 +66,7 @@ export default function App() {
               </RequireAuth>
             }
           />
+          <Route path="/my-trips" element={<RequireAuth><MyTrips /></RequireAuth>} />
           <Route path="/trips/:id" element={<TripDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
