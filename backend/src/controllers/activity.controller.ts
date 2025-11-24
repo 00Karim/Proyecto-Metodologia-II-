@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { ActivityDocument } from "../types+interfaces/typesInterfaces.js";
-import { ActivityModel } from "../models/activity.model.js";
+import { ActivityService } from "../models/activity.model.js";
 import type { Controller } from "../types+interfaces/typesInterfaces.js";
 import { TripModel } from "../models/trip.model.js";
 import mongoose from "mongoose";
@@ -11,12 +11,12 @@ class LocalActivityController implements Controller<ActivityDocument, void> {
       const { id } = req.params;
 
       if (id) {
-        const activity = await ActivityModel.getObject(id);
+        const activity = await ActivityService.getObject(id);
         if (!activity) return res.status(404).json({ error: "No se encontro la actividad" });
         return res.json(activity);
       }
 
-      const activities = await ActivityModel.getAllObjects();
+      const activities = await ActivityService.getAllObjects();
       return res.json(activities);
     } catch (error) {
       console.error(error);
@@ -26,25 +26,26 @@ class LocalActivityController implements Controller<ActivityDocument, void> {
 
   handleCreateObject = async (req: Request, res: Response) => {
     try {
-    const { tripId } = req.params;
-    const { nombre, descripcion, votos } = req.body;
+      const { tripId } = req.params;
+      const data = req.body;
 
     if (!tripId) {
       return res.status(400).json({ error: "Se requiere un tripId en la URL" });
     }
 
-    // crear actividad
-    const activity = await ActivityModel.createObject({ nombre, descripcion, votos, tripId });
-    if (!activity) {
-      return res.status(500).json({ error: "No se pudo crear la actividad" });
-    }
-
-    // vincular la actividad al trip
+    // chequeamos que exista el trip
     const trip = await TripModel.getObject(tripId);
     if (!trip) {
       return res.status(404).json({ error: "Viaje no encontrado" });
     }
 
+    // crear actividad
+    const activity = await ActivityService.createObject({...data, tripId});
+    if (!activity) {
+      return res.status(500).json({ error: "No se pudo crear la actividad" });
+    }
+
+    // vincular la actividad al trip
     trip.activities.push(activity._id as mongoose.Types.ObjectId);
     await trip.save();
 
@@ -66,7 +67,7 @@ class LocalActivityController implements Controller<ActivityDocument, void> {
         return res.status(400).json({ error: "Se requiere un id" });
       }
 
-      const deleted = await ActivityModel.deleteObject(id);
+      const deleted = await ActivityService.deleteObject(id);
 
       if (deleted) {
         return res.status(204).send();
@@ -84,7 +85,7 @@ class LocalActivityController implements Controller<ActivityDocument, void> {
       const { id } = req.params;
       const updateData = req.body;
 
-      const updated = await ActivityModel.updateObject({ id, ...updateData });
+      const updated = await ActivityService.updateObject(id!, {...updateData });
       if (!updated) return res.status(404).json({ error: "No se pudo actualizar la actividad" });
 
       return res.json(updated);

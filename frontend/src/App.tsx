@@ -37,7 +37,6 @@ export default function App() {
               <NavLink to="/my-trips" className={({ isActive }) => (isActive ? "active" : "")}>
                 Tus viajes
               </NavLink>
-              <span style={{ marginLeft: 10 }}>Hola, {user.nombre || user.mail}</span>
               <button className="btn" style={{ marginLeft: 10 }} onClick={logout}>
                 Logout
               </button>
