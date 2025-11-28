@@ -10,6 +10,7 @@ import { SalidaNocturnaModel } from "../models/activities/salidaNocturna.js";
 import type { SalidaNocturnaDocument } from "../models/activities/salidaNocturna.js";
 import { SalidaEnBiciModel } from "../models/activities/salidaBici.js";
 import type { SalidaEnBiciDocument } from "../models/activities/salidaBici.js";
+import { eventBus } from "../events/eventBus.js"
 
 import type { ModelParams } from "../types+interfaces/typesInterfaces.js";
 
@@ -25,7 +26,7 @@ class BaseActivityModel {
     return ActivityModel.find();
   }
 
-  async createObject(parameters: ModelParams): Promise<PossibleReturnedActivities | null> {
+    async createObject(parameters: ModelParams): Promise<PossibleReturnedActivities | null> {
     if (!parameters.nombre || !parameters.descripcion || !parameters.tripId) {
       throw new Error("Faltan campos obligatorios");
     }
@@ -38,6 +39,8 @@ class BaseActivityModel {
       fecha: parameters.fecha
     };
 
+    let savedActivity: PossibleReturnedActivities | null = null;
+
     switch (parameters.tipo) {
       case "tourcultural": {
         const doc = new TourCulturalModel({
@@ -48,7 +51,8 @@ class BaseActivityModel {
           lugaresVisitados: parameters.lugaresVisitados,
           precioEntradas: parameters.precioEntradas,
         });
-        return (await doc.save()) as ActivityDocument;
+        savedActivity = await doc.save() as ActivityDocument;
+        break;
       }
 
       case "tourgastronomico": {
@@ -64,7 +68,8 @@ class BaseActivityModel {
           restriccionesAlimentarias: parameters.restriccionesAlimentarias,
           puntoEncuentro: parameters.puntoEncuentro,
         });
-        return (await doc.save()) as ActivityDocument;
+        savedActivity = await doc.save() as ActivityDocument;
+        break;
       }
 
       case "tournatural": {
@@ -85,7 +90,8 @@ class BaseActivityModel {
           recomendaciones: parameters.recomendaciones,
           itemsNecesarios: parameters.itemsNecesarios,
         });
-        return (await doc.save()) as ActivityDocument;
+        savedActivity = await doc.save() as ActivityDocument;
+        break;
       }
 
       case "salidanocturna": {
@@ -97,7 +103,8 @@ class BaseActivityModel {
           bebidasIncluidas: parameters.bebidasIncluidas,
           codigoVestimenta: parameters.codigoVestimenta,
         });
-        return (await doc.save()) as ActivityDocument;
+        savedActivity = await doc.save() as ActivityDocument;
+        break;
       }
 
       case "salidaenbici": {
@@ -108,17 +115,26 @@ class BaseActivityModel {
           dificultad: parameters.dificultad,
           requiereExperiencia: parameters.requiereExperiencia,
         });
-        return (await doc.save()) as ActivityDocument;
+        savedActivity = await doc.save() as ActivityDocument;
+        break;
       }
 
       default: {
-        // por si en algún futuro agregás otro tipo y se te escapa
         const neverTipo: never = parameters;
         throw new Error(`Tipo de actividad no soportado: ${(neverTipo as any).tipo}`);
       }
     }
     
+    if (savedActivity) {
+      eventBus.emit("activity:created", {
+        activity: savedActivity,
+        tripId: parameters.tripId,
+      });
+    }
+
+    return savedActivity;
   }
+
 
   async deleteObject(id: string): Promise<boolean> {
     const result = await ActivityModel.findByIdAndDelete(id);
