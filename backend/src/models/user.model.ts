@@ -57,6 +57,16 @@ class BaseUserModel implements Model<UserDocument, ModelParams>{
             return null            
         }
     }
+
+    async getManyByIds(ids: (ObjectId | string)[]): Promise<UserDocument[] | []> {
+        try {
+            const usuarios = await User.find({ _id: { $in: ids } });
+            return usuarios;
+        } catch (error: any) {
+            console.log("Hubo un error al obtener varios usuarios: ", error.message);
+            return [];
+        }
+    }
 }
 
 export const UserModel = new BaseUserModel() // instanciamos el model para que sea exportada siempre la misma instancia
